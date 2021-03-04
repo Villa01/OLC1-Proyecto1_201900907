@@ -1,1 +1,75 @@
+/*--------------- 1er Area: Codigo de Usuario -----------------------*/
+//-------> importaciones, paquetes
+package Analizadores;
+import java_cup.runtime.Symbol;
 
+//------> Codigo para el parser,variables, metodos
+parser code
+{:
+    public String resultado = "";
+:}
+
+//------> Codigo para las acciones gramaticales
+action code
+{:  :}
+
+/*--------------- 2da Area: Declaraciones -----------------------*/
+
+//------> declaracion de terminales 
+
+terminal porc, conj, dospuntos, id, flecha, ptycoma, coma, letra, digito, ascii, conc, or, kleen,
+ mas, llava, llavc, guion, cadena, escapado, interrogacion;
+
+//------> declaracion de no terminales
+non terminal String S,  ENCABEZADO, VALID, CONJUNTO, EXPR, SIMB, LISTASIMB, ER, CUERPO, CONJ;
+
+//------> Precedencia de menor a mayor
+
+//precedence left id;
+precedence left escapado;
+
+start with S;
+
+/*--------------- 3ra Area: Reglas Sintacticas -----------------------*/
+S::= llava CUERPO:a llavc                             {: System.out.print(a); :}
+;
+CUERPO ::= ENCABEZADO:a porc porc porc porc VALID:b   {: System.out.println(a); System.out.println(b); :}
+;
+
+ENCABEZADO ::= CONJUNTO:b ENCABEZADO:a                {: System.out.println( "Reconocio un encabezado y un conjunto" + a); System.out.println(b); :}
+        | EXPR:b ENCABEZADO:a                         {: System.out.println("Reconocio un encabezado y una expresion" + a); System.out.println(b); :}
+        | CONJUNTO:a                                  {: System.out.println("Reconocio un conjunto" + a);:}
+        | EXPR:a                                      {: System.out.println("Reconocio un encabezado" + a); :}
+;
+CONJUNTO::= conj dospuntos id flecha CONJ:a ptycoma   {: System.out.println("Reconocio un conjunto " + a); :};
+
+CONJ::= CONJ:a coma SIMB:b                            {: System.out.println("Reconocio un conjunto2 " + a); System.out.println("Reconocio un simbolo " + b); :}  
+    | LISTASIMB:a                                     {: System.out.println("Reconocio una lista " + a); :}
+;
+
+LISTASIMB::= SIMB:a guion SIMB:b                      {: System.out.println("Reconocio un simbolo " + a); System.out.println("Reconocio otro simbolo " + b); :}
+            | SIMB:c                                  {: System.out.println("Reconocio el ultimo simbolo" +c); :}
+;
+
+SIMB ::= letra 
+    | digito
+    | ascii
+    | cadena
+    | escapado
+;
+
+EXPR ::= id flecha ER:a ptycoma                       {: System.out.println("Reconocio inicio de expresion " + a); :}
+;
+
+ER::= conc ER:a ER:b                                  {: System.out.println("Reconocio inicio de ER conc " + a); System.out.println("Reconocio inicio de ER2 conc " + b); :}
+    | or  ER:a ER:b                                   {: System.out.println("Reconocio inicio de ER or" + a); System.out.println("Reconocio inicio de ER2 or " + b); :}
+    | kleen ER:a                                      {: System.out.println("Reconocio inicio de ER kleen " + a); :}
+    | mas ER:a 
+    | interrogacion ER:a                              {: System.out.println("Reconocio inicio de ER mas " + a); :}
+    | llava id llavc
+    | SIMB:a                                           {: System.out.println("Reconocio inicio de ER " + a); :}
+;
+
+
+VALID ::= id dospuntos cadena ptycoma VALID | id dospuntos cadena ptycoma
+;

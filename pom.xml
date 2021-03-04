@@ -7,9 +7,9 @@
     <packaging>jar</packaging>
     <dependencies>
         <dependency>
-            <groupId>JFlex</groupId>
-            <artifactId>JFlex</artifactId>
-            <version>1.0</version>
+            <groupId>jflex</groupId>
+            <artifactId>jflex</artifactId>
+            <version>1.6.1</version>
         </dependency>
         <dependency>
             <groupId>java-cup</groupId>
@@ -17,9 +17,9 @@
             <version>11b</version>
         </dependency>
         <dependency>
-            <groupId>java-cup--rt</groupId>
-            <artifactId>java-cup-rt</artifactId>
-            <version>11b</version>
+            <groupId>java-cup-11b</groupId>
+            <artifactId>java-cup-11b</artifactId>
+            <version>runtime</version>
         </dependency>
     </dependencies>
     <properties>

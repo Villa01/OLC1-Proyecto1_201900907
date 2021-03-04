@@ -1,4 +1,10 @@
 GUI\Interface$3.class
-GUI\Interface$1.class
-GUI\Interface$2.class
+Analizadores\Sintactico$CUP$Sintactico$actions.class
 GUI\Interface.class
+Analizadores\lexico.class
+Generador\Lexico.class
+Analizadores\Sintactico.class
+GUI\Interface$1.class
+Generador\Sintactico.class
+GUI\Interface$2.class
+Analizadores\Simbolos.class
