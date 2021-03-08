@@ -11,7 +11,7 @@ node001[label = "{false|{[2, 3]|.|[8]}|0}"];
 node001 -> node0010
 node0010[label = "{true|{[2]|?|[2]}|0}"];
 node0010 -> node00100
-node00100[label = "{false|{[2]|tat|[2]}|2}"];
+node00100[label = "{false|{[2]|-|[2]}|2}"];
 node001 -> node0011
 node0011[label = "{false|{[3]|.|[8]}|0}"];
 node0011 -> node00110

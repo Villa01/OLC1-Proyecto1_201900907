@@ -1,10 +1,14 @@
 GUI\Interface$3.class
+GUI\PanelImagen.class
 Estructuras\Token.class
+GUI\Interface$4.class
 Analizadores\Sintactico.class
 GUI\Interface$1.class
 Generador\Sintactico.class
 Estructuras\ExpresionRegular.class
+GUI\Interface$5.class
 Estructuras\Hoja.class
+GUI\Interface$6.class
 Estructuras\ArbolSintactico.class
 Analizadores\Sintactico$CUP$Sintactico$actions.class
 Estructuras\Arbol.class

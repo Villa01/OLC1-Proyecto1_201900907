@@ -82,12 +82,12 @@ SIMB ::= letra:a                                      {: RESULT = new Hoja( pars
     | digito:a                                        {: RESULT = new Hoja( parser.numHojas, a.toString(), "" , false, null, null); parser.numHojas++;  :}
     | ascii:a                                         {: RESULT = new Hoja( parser.numHojas, a.toString(), "" , false, null, null); parser.numHojas++;  :}
     | cadena:a                                        {: RESULT = new Hoja( parser.numHojas, a.toString(), "" , false, null, null); parser.numHojas++;  :}
-    | escapado:a                                      {: RESULT = new Hoja( parser.numHojas, "\\\\" + a.toString(), "" , false, null, null); parser.numHojas++; :}
+    | escapado:a                                      {: RESULT = new Hoja( parser.numHojas, "\\" + a.toString(), "" , false, null, null); parser.numHojas++; :}
 
 ;
 
-EXPR ::= id flecha ER:a ptycoma                       {:
-                                                        RESULT = new ExpresionRegular(new ArbolSintactico(a), a.toString()); parser.numHojas = 1;
+EXPR ::= id:b flecha ER:a ptycoma                       {:
+                                                        RESULT = new ExpresionRegular(new ArbolSintactico(a), b); parser.numHojas = 1;
                                                       :}
     | error
 ;

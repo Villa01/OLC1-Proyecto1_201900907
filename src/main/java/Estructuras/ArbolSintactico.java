@@ -55,6 +55,7 @@ public class ArbolSintactico extends Arbol {
         String r = "";
         String nodoTerm = nodo.getToken();
         nodoTerm = nodoTerm.replace("\"", "");
+        nodoTerm = nodoTerm.replace("\n", "\\ n");
         r= "node" + i + "[label = \"{"+nodo.isAnulable()+"|{"+nodo.getPrimeros()+"|"+nodoTerm+"|"+nodo.getUltimos()+"}|"+id+"}\"];\n";
         
         System.out.println("El texto dentro de graphviz es " + r);
