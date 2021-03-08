@@ -1,0 +1,41 @@
+digraph Arbol_Sintactico{
+
+ node[style=rounded shape=record]
+node0[label = "{false|{[1]|.|[9]}|0}"];
+node0 -> node00
+node00[label = "{false|{[1]|.|[8]}|0}"];
+node00 -> node000
+node000[label = "{false|{[1]|posibles|[1]}|1}"];
+node00 -> node001
+node001[label = "{false|{[2, 3]|.|[8]}|0}"];
+node001 -> node0010
+node0010[label = "{true|{[2]|?|[2]}|0}"];
+node0010 -> node00100
+node00100[label = "{false|{[2]|tat|[2]}|2}"];
+node001 -> node0011
+node0011[label = "{false|{[3]|.|[8]}|0}"];
+node0011 -> node00110
+node00110[label = "{false|{[3]|digito|[3]}|3}"];
+node0011 -> node00111
+node00111[label = "{false|{[4]|.|[8]}|0}"];
+node00111 -> node001110
+node001110[label = "{false|{[4]|digito|[4]}|4}"];
+node00111 -> node001111
+node001111[label = "{false|{[5]|.|[8]}|0}"];
+node001111 -> node0011110
+node0011110[label = "{false|{[5]|digito|[5]}|5}"];
+node001111 -> node0011111
+node0011111[label = "{false|{[6]|.|[8]}|0}"];
+node0011111 -> node00111110
+node00111110[label = "{false|{[6]|letra|[6]}|6}"];
+node0011111 -> node00111111
+node00111111[label = "{false|{[7]|.|[8]}|0}"];
+node00111111 -> node001111110
+node001111110[label = "{false|{[7]|letra|[7]}|7}"];
+node00111111 -> node001111111
+node001111111[label = "{false|{[8]|letra|[8]}|8}"];
+node0 -> node01
+node01[label = "{false|{[9]|#|[9]}|9}"];
+
+
+}

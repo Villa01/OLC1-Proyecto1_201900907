@@ -2,11 +2,31 @@
 //-------> importaciones, paquetes
 package Analizadores;
 import java_cup.runtime.Symbol;
-
+import java.util.LinkedList;
+import Estructuras.*;
 //------> Codigo para el parser,variables, metodos
 parser code
 {:
     public String resultado = "";
+    public static Nodo raiz;
+    public int numHojas = 1;
+    public LinkedList<ExpresionRegular> expresiones = new LinkedList<ExpresionRegular>();
+    public Nodo getRaiz(){ return raiz;}
+    public LinkedList<ExpresionRegular> getExpresiones(){return expresiones;}
+
+
+    public void syntax_error(Symbol s)
+    {
+        System.err.println("Error en la Linea " + (s.right+1) +" Columna "+(s.left+1)+ ". Identificador "+s.value + " no reconocido. Se ha recuperado del error." );
+        //error nuevo = new error("Error Sintactico (Recuperado)", s.value.toString(), s.right+1, s.left+1);
+        //Ventana.listaErrores.add(nuevo);
+    }
+    public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception
+    {
+        System.err.println("Error en la Linea " + (s.right+1)+ " Columna "+(s.left+1)+". Identificador " +s.value + " no reconocido.");
+        //error nuevo = new error("Error Sintactico", s.value.toString(), s.right+1, s.left+1);
+        //Ventana.listaErrores.add(nuevo);
+    }
 :}
 
 //------> Codigo para las acciones gramaticales
@@ -17,59 +37,77 @@ action code
 
 //------> declaracion de terminales 
 
-terminal porc, conj, dospuntos, id, flecha, ptycoma, coma, letra, digito, ascii, conc, or, kleen,
+terminal String porc, conj, dospuntos, id, flecha, ptycoma, coma, letra, digito, ascii, conc, or, kleen,
  mas, llava, llavc, guion, cadena, escapado, interrogacion;
 
 //------> declaracion de no terminales
-non terminal String S,  ENCABEZADO, VALID, CONJUNTO, EXPR, SIMB, LISTASIMB, ER, CUERPO, CONJ;
+non terminal String S, VALID, CONJUNTO, CONJUNTOS, LISTASIMB, CUERPO, CONJ, SIMBCONJ;
+non terminal Nodo ER,SIMB;
+non terminal ExpresionRegular EXPR;
+non terminal LinkedList<ExpresionRegular> EXPRESIONES;
+non terminal Object ENCABEZADO;
 
 //------> Precedencia de menor a mayor
 
 //precedence left id;
-precedence left escapado;
+//precedence left escapado;
 
 start with S;
 
 /*--------------- 3ra Area: Reglas Sintacticas -----------------------*/
-S::= llava CUERPO:a llavc                             {: System.out.print(a); :}
+S::= llava CUERPO:a llavc                             {:  :}
 ;
-CUERPO ::= ENCABEZADO:a porc porc porc porc VALID:b   {: System.out.println(a); System.out.println(b); :}
-;
-
-ENCABEZADO ::= CONJUNTO:b ENCABEZADO:a                {: System.out.println( "Reconocio un encabezado y un conjunto" + a); System.out.println(b); :}
-        | EXPR:b ENCABEZADO:a                         {: System.out.println("Reconocio un encabezado y una expresion" + a); System.out.println(b); :}
-        | CONJUNTO:a                                  {: System.out.println("Reconocio un conjunto" + a);:}
-        | EXPR:a                                      {: System.out.println("Reconocio un encabezado" + a); :}
-;
-CONJUNTO::= conj dospuntos id flecha CONJ:a ptycoma   {: System.out.println("Reconocio un conjunto " + a); :};
-
-CONJ::= CONJ:a coma SIMB:b                            {: System.out.println("Reconocio un conjunto2 " + a); System.out.println("Reconocio un simbolo " + b); :}  
-    | LISTASIMB:a                                     {: System.out.println("Reconocio una lista " + a); :}
+CUERPO ::= ENCABEZADO:a porc porc porc porc VALID:b   {: :}
+        | error
 ;
 
-LISTASIMB::= SIMB:a guion SIMB:b                      {: System.out.println("Reconocio un simbolo " + a); System.out.println("Reconocio otro simbolo " + b); :}
-            | SIMB:c                                  {: System.out.println("Reconocio el ultimo simbolo" +c); :}
+ENCABEZADO ::= CONJUNTO ENCABEZADO                    {:  :}
+        | EXPR:a ENCABEZADO:b                         {: RESULT = b; parser.expresiones.add(a); :}
+        | CONJUNTO                                    {:  :}
+        | EXPR:a                                      {: parser.expresiones.add(a); :}
 ;
 
-SIMB ::= letra 
-    | digito
-    | ascii
-    | cadena
-    | escapado
+CONJUNTO::= conj dospuntos id flecha CONJ:a ptycoma   {:  :}
 ;
 
-EXPR ::= id flecha ER:a ptycoma                       {: System.out.println("Reconocio inicio de expresion " + a); :}
+CONJ::= CONJ:a coma SIMBCONJ:b                        {:  :}  
+    | LISTASIMB:a                                     {:  :}
 ;
 
-ER::= conc ER:a ER:b                                  {: System.out.println("Reconocio inicio de ER conc " + a); System.out.println("Reconocio inicio de ER2 conc " + b); :}
-    | or  ER:a ER:b                                   {: System.out.println("Reconocio inicio de ER or" + a); System.out.println("Reconocio inicio de ER2 or " + b); :}
-    | kleen ER:a                                      {: System.out.println("Reconocio inicio de ER kleen " + a); :}
-    | mas ER:a 
-    | interrogacion ER:a                              {: System.out.println("Reconocio inicio de ER mas " + a); :}
-    | llava id llavc
-    | SIMB:a                                           {: System.out.println("Reconocio inicio de ER " + a); :}
+LISTASIMB::= SIMBCONJ:a guion SIMBCONJ:b              {:  :}
+            | SIMBCONJ:c                              {:  :}
 ;
 
+SIMB ::= letra:a                                      {: RESULT = new Hoja( parser.numHojas, a.toString(), "" , false, null, null); parser.numHojas++;  :}
+    | digito:a                                        {: RESULT = new Hoja( parser.numHojas, a.toString(), "" , false, null, null); parser.numHojas++;  :}
+    | ascii:a                                         {: RESULT = new Hoja( parser.numHojas, a.toString(), "" , false, null, null); parser.numHojas++;  :}
+    | cadena:a                                        {: RESULT = new Hoja( parser.numHojas, a.toString(), "" , false, null, null); parser.numHojas++;  :}
+    | escapado:a                                      {: RESULT = new Hoja( parser.numHojas, "\\\\" + a.toString(), "" , false, null, null); parser.numHojas++; :}
+
+;
+
+EXPR ::= id flecha ER:a ptycoma                       {:
+                                                        RESULT = new ExpresionRegular(new ArbolSintactico(a), a.toString()); parser.numHojas = 1;
+                                                      :}
+    | error
+;
+
+ER::= conc ER:a ER:b                                  {: RESULT = new Nodo( ".", "",false, a, b ); :}
+    | or  ER:a ER:b                                   {: RESULT = new Nodo( "|", "",false, a, b ); :}
+    | kleen ER:a                                      {: RESULT = new Nodo( "*", "",false, a, null ); :}
+    | mas ER:a                                        {: RESULT = new Nodo( "+", "",false, a, null ); :}
+    | interrogacion ER:a                              {: RESULT = new Nodo( "?", "",false, a, null ); :}
+    | llava id:a llavc                                {: RESULT = new Hoja( parser.numHojas, a.toString(), "", false, null, null); parser.numHojas++; :}
+    | SIMB:a                                          {: RESULT = a; :}
+;
+
+SIMBCONJ ::= letra:a                                  {:   :}
+    | digito:a                                        {:   :}
+    | ascii:a                                         {:   :}
+    | cadena:a                                        {:   :}
+    | escapado:a                                      {:   :}
+
+;
 
 VALID ::= id dospuntos cadena ptycoma VALID | id dospuntos cadena ptycoma
 ;

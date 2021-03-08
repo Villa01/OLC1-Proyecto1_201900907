@@ -6,8 +6,13 @@
 package GUI;
 
 import Analizadores.*;
+import Estructuras.Arbol;
+import Estructuras.ExpresionRegular;
+import Estructuras.Nodo;
 import java.io.BufferedReader;
 import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -23,6 +28,8 @@ public class Interface extends javax.swing.JFrame {
      */
     public Interface() {
         initComponents();
+        
+       this.imprimirEnConsola("Inicio del programa\n");
     }
 
     /**
@@ -198,13 +205,41 @@ public class Interface extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+       
+        LinkedList<ExpresionRegular> expresiones = null;
+       
+        
        Sintactico sintactico =new Sintactico(new lexico(new BufferedReader( new StringReader(areaEntrada.getText()))));
-       this.imprimirEnConsola("Inicio del programa");
+       
+       
         try {
             sintactico.parse();
+            expresiones = sintactico.getExpresiones();
         } catch (Exception ex) {
             Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
+            this.imprimirEnConsola("Hubo un error al leer el archivo\n");
         }
+        
+        if (expresiones == null){
+            this.imprimirEnConsola("Hubo un error al leer el archivo, la raiz es nula\n");
+            
+        } else {
+            for (int i = 0; i < sintactico.expresiones.size(); i++) {
+                ExpresionRegular expresion = sintactico.expresiones.get(i);
+                
+                expresion.arbol.agregarSimboloFinal();
+                expresion.arbol.generarAnulables(expresion.arbol.raiz);
+                expresion.arbol.obtenerPrimeros(expresion.arbol.raiz);
+                expresion.arbol.obtenerUltimos(expresion.arbol.raiz);
+                
+                
+                
+                expresion.arbol.GraficarSintactico("Grafico" + i);
+                this.imprimirEnConsola("Orden prefijo" + expresion.arbol.prefijo(expresion.arbol.raiz) + "\n");
+                this.imprimirEnConsola("Orden postfijo" + expresion.arbol.postfijo(expresion.arbol.raiz) + "\n");
+                this.imprimirEnConsola("Orden infijo" + expresion.arbol.infijo(expresion.arbol.raiz) + "\n");
+            }
+        } 
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
