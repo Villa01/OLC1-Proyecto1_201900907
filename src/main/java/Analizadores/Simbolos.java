@@ -9,6 +9,7 @@ package Analizadores;
 public class Simbolos {
   /* terminals */
   public static final int kleen = 14;
+  public static final int mayorq = 22;
   public static final int cadena = 19;
   public static final int coma = 8;
   public static final int ascii = 11;
@@ -52,7 +53,8 @@ public class Simbolos {
   "guion",
   "cadena",
   "escapado",
-  "interrogacion"
+  "interrogacion",
+  "mayorq"
   };
 }
 

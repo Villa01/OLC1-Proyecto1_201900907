@@ -268,6 +268,10 @@ public class Interface extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
        
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        
         LinkedList<ExpresionRegular> expresiones = null;
        
         
@@ -286,27 +290,27 @@ public class Interface extends javax.swing.JFrame {
             this.imprimirEnConsola("Hubo un error al leer el archivo, la raiz es nula\n");
             
         } else {
-            for (int i = 0; i < sintactico.expresiones.size(); i++) {
-                ExpresionRegular expresion = sintactico.expresiones.get(i);
-                
-                expresion.arbol.agregarSimboloFinal();
-                expresion.arbol.generarAnulables(expresion.arbol.raiz);
-                expresion.arbol.obtenerPrimeros(expresion.arbol.raiz);
-                expresion.arbol.obtenerUltimos(expresion.arbol.raiz);
-                
-                
-                
-                expresion.arbol.GraficarSintactico("Grafico" + i);
-                this.imprimirEnConsola("Orden prefijo" + expresion.arbol.prefijo(expresion.arbol.raiz) + "\n");
-                this.imprimirEnConsola("Orden postfijo" + expresion.arbol.postfijo(expresion.arbol.raiz) + "\n");
-                this.imprimirEnConsola("Orden infijo" + expresion.arbol.infijo(expresion.arbol.raiz) + "\n");
+            try{
+                for (int i = 0; i < sintactico.expresiones.size(); i++) {
+                    ExpresionRegular expresion = sintactico.expresiones.get(i);
+
+                    expresion.arbol.agregarSimboloFinal();
+                    expresion.arbol.generarAnulables(expresion.arbol.raiz);
+                    expresion.arbol.obtenerPrimeros(expresion.arbol.raiz);
+                    expresion.arbol.obtenerUltimos(expresion.arbol.raiz);
+
+                    expresion.arbol.generarTablaSiguientes(expresion.id);
+
+                    expresion.arbol.GraficarSintactico("Grafico" + i);
+                    this.imprimirEnConsola("Orden prefijo" + expresion.arbol.prefijo(expresion.arbol.raiz) + "\n");
+                    this.imprimirEnConsola("Orden postfijo" + expresion.arbol.postfijo(expresion.arbol.raiz) + "\n");
+                    this.imprimirEnConsola("Orden infijo" + expresion.arbol.infijo(expresion.arbol.raiz) + "\n");
+                }
+            } catch (java.lang.NullPointerException e){
+                 imprimirEnConsola("No se pudieron generar las expresiones");   
             }
         }
         actualizarArbolDeArchivos();
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -381,7 +385,7 @@ public class Interface extends javax.swing.JFrame {
         String rutaProyecto = System.getProperty("user.dir");      
         DefaultTreeModel modelo = (DefaultTreeModel)arbolArchivos.getModel();
         DefaultMutableTreeNode raiz = (DefaultMutableTreeNode)modelo.getRoot();
-        modelo.setRoot(this.dibujarArchivos(rutaProyecto + "\\Salida\\Imagenes\\"));
+        modelo.setRoot(this.dibujarArchivos(rutaProyecto + "\\Salida\\"));
         modelo.reload(raiz);
     }
     

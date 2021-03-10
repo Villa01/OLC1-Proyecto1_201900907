@@ -38,7 +38,7 @@ action code
 //------> declaracion de terminales 
 
 terminal String porc, conj, dospuntos, id, flecha, ptycoma, coma, letra, digito, ascii, conc, or, kleen,
- mas, llava, llavc, guion, cadena, escapado, interrogacion;
+ mas, llava, llavc, guion, cadena, escapado, interrogacion, mayorq;
 
 //------> declaracion de no terminales
 non terminal String S, VALID, CONJUNTO, CONJUNTOS, LISTASIMB, CUERPO, CONJ, SIMBCONJ;

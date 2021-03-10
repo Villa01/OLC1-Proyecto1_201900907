@@ -6,7 +6,14 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import Estructuras.Hoja;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Hashtable;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class ArbolSintactico extends Arbol {
@@ -119,6 +126,14 @@ public class ArbolSintactico extends Arbol {
                         nodo.setAnulable(true);
                     }
                     break;
+                case "+":
+                    if (!nodo.getHijoI().isAnulable()){
+                        nodo.setAnulable(false);
+                    } else {
+                        nodo.setAnulable(true);
+                    }
+                    break;
+  
                 default:
                     nodo.setAnulable(false);
                     break;
@@ -210,4 +225,176 @@ public class ArbolSintactico extends Arbol {
         }
         return nueva;
     }
+    
+    public String generarTablaSiguientes(String nombre){
+        String texto = "digraph Arbol_Sintactico{arset [label=<\n" +
+"        <TABLE ALIGN=\"LEFT\">\n" +
+"            <TR>\n" +
+"                <TD>Hojas</TD>\n" +
+"                <TD>Lexema</TD>\n" +
+"                <TD>Siguientes</TD>\n      "+
+"            </TR>";
+        HashMap siguientes = generarSiguientesEnTabla(this.raiz);
+        Set<Integer> llaves = siguientes.keySet();
+        for (Integer llave : llaves ){
+            texto+= "<TR>\n" +
+        "                <TD>"+llave+"</TD>\n" +
+        "                <TD>"+this.obtenerNodoConId(llave, raiz).getToken()+"</TD>\n" +
+        "                <TD>"+siguientes.get(llave)+"</TD>\n" +
+        "            </TR>";
+        }
+        
+        texto += "</TABLE>\n" +
+                    "    >, ];}";
+        
+        this.GenerarDot(texto, nombre);
+        try {
+            ejecutarDotTablaSiguientes(nombre);
+        } catch (IOException ex) {
+            Logger.getLogger(ArbolSintactico.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(ArbolSintactico.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return texto;
+    }
+    
+    
+    public HashMap generarSiguientesEnTabla(Nodo nodo){
+        HashMap<Integer, ArrayList> siguientes = new HashMap();
+        
+        if ( nodo != null) {
+            if (nodo.getClass() == Hoja.class){
+
+                Hoja hoja = (Hoja)nodo;
+                siguientes.put(hoja.getId(), null);
+            }
+            HashMap sigIz = generarSiguientesEnTabla(nodo.getHijoI());
+            HashMap sigDer = generarSiguientesEnTabla(nodo.getHijoD());
+            
+            Set<Integer> llavesIz = sigIz.keySet();
+            Set<Integer> llavesDer = sigDer.keySet();
+            Set<Integer> llavesSig = siguientes.keySet();
+            
+            Set<Integer> llaves = new HashSet<Integer>();
+            
+            llaves.addAll(llavesIz);
+            llaves.addAll(llavesDer);
+            llaves.addAll(llavesSig);
+            
+            System.out.println("Las llaves son " + llaves + " en el nodo con lexema " + nodo.getToken());
+            for (Integer llave : llaves ){
+                if (siguientes.get(llave)!= null){
+                    ArrayList datosSigIz = (ArrayList)sigIz.get(llave);
+                    ArrayList lista = siguientes.get(llave);
+                    if ( datosSigIz != null){
+                        lista.addAll(datosSigIz);
+                    }
+                    
+                    siguientes.put(llave, lista);
+                } else {
+                    siguientes.put(llave, (ArrayList)sigIz.get(llave));
+                }
+                if (siguientes.get(llave)!= null){
+                    ArrayList datosSigDer = (ArrayList)sigDer.get(llave);
+                    ArrayList lista = siguientes.get(llave);
+                    if ( datosSigDer != null){
+                        lista.addAll(datosSigDer);
+                    }
+                    siguientes.put(llave, lista);
+                } else {
+                    siguientes.put(llave, (ArrayList)sigDer.get(llave));
+                }
+            }
+            
+             switch (nodo.getToken()) {
+                case "*": 
+                    
+                    ArrayList ultimosN = nodo.getUltimos();
+                    for ( Object ultimo : ultimosN){
+                        Integer i  = (Integer)ultimo;
+                        
+                        if (siguientes.get(i) != null){
+                            ArrayList ultimosAnt = siguientes.get(ultimo);
+                            ultimosN.addAll(ultimosAnt);
+                            
+                        }
+                        siguientes.put(i, ultimosN);
+                    }
+                    
+                    break;
+                case "+": 
+                    
+                    ArrayList ultimosn = nodo.getUltimos();
+                    for ( Object ultimo : ultimosn){
+                        Integer i  = (Integer)ultimo;
+                        
+                        if (siguientes.get(i) != null){
+                            ArrayList ultimosAnt = siguientes.get(ultimo);
+                            ultimosn.addAll(ultimosAnt);
+                            
+                        }
+                        siguientes.put(i, ultimosn);
+                    }
+                    
+                    break;
+                case ".":
+                    ArrayList ultimosC1 = nodo.getHijoI().getUltimos();
+                    ArrayList primerosC2 = nodo.getHijoD().getPrimeros();
+                    for ( Object ultimo : ultimosC1 ) {
+                        Integer i = (Integer)ultimo;
+                        
+                        if (siguientes.get(i)!=null){
+                            ArrayList unidos = unirArrayList(siguientes.get(i), primerosC2);
+                            siguientes.put(i, unidos);
+                        } else{
+                            siguientes.put(i, primerosC2);
+                        }
+                    }
+                    
+                    break;
+                
+             }
+        }
+        System.out.println("Los siguientes son "+siguientes);
+        return siguientes;
+    }
+    
+    
+    public void ejecutarDotTablaSiguientes(String nombre) throws IOException, InterruptedException {
+        String file_input_path = nombre;
+        String [] comando = {"dot", "-Tpng","Salida\\ArchivosDot\\"+nombre+".dot", "-o","Salida\\Siguientes\\"+ nombre + ".png"};
+         Process p = Runtime.getRuntime().exec(comando); 
+        int err = p.waitFor();
+    }
+    
+    public Nodo obtenerNodoConId(int id, Nodo nodo){
+        Nodo retorno = null;
+        if (nodo != null ){
+            Nodo nodoIz = obtenerNodoConId(id, nodo.getHijoI());
+            Nodo nodoDer = obtenerNodoConId(id, nodo.getHijoD());
+            if (nodo.getClass() == Hoja.class){
+                Hoja hoja = (Hoja)nodo;
+                if (hoja.getId() == id ){
+                    retorno = nodo;
+                }
+            } else if (nodoIz != null){
+                retorno = nodoIz;
+            }else if (nodoDer != null){
+                retorno = nodoDer;
+            }
+        }
+        
+        return retorno;
+    }
+    
+    public ArrayList unirArrayList(ArrayList a, ArrayList b){
+        
+        Set setA = new LinkedHashSet<>(a);
+        setA.addAll(b);
+        ArrayList combinacion = new ArrayList<>(setA);
+         
+        
+        return combinacion;
+    }
+    
 }

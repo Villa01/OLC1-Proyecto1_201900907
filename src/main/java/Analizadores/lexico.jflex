@@ -31,13 +31,13 @@ digito              = [0-9]
 letra               = [A-Za-z]
 cadena              = \"[^\"\"]*\"
 ascii               = [!-\/]|[:-@]|[\[-`]|[{-}]
-flecha              = "->"
+flecha              = -(\s)*>
 id                  = {letra}({digito}|{letra}|_)+
 escapado            =  \\\'|\\"n"|\\\"
 //FinLinea            = \r|\n|\r\n
 //InputCharacter      = [^\r\n]
 comentariosimple    =  "//" [^\r\n]* (\r|\n|\r\n)?
-comentarioMultilinea = "<!"[^"!>"]*"!>"
+comentarioMultilinea = <![^"!>"]*!>
 
 "<!"(letra|digito|ascii[^!])*"!>"
 
@@ -67,6 +67,7 @@ comentarioMultilinea = "<!"[^"!>"]*"!>"
 //"\""        { System.out.println("Reconocio "+yytext()+" comilla doble "); return new Symbol(Simbolos.comillaD, yycolumn, yyline, yytext()); }
 "~"         { System.out.println("Reconocio "+yytext()+" guion "); return new Symbol(Simbolos.guion, yycolumn, yyline, yytext()); }
 "?"         { System.out.println("Reconocio "+yytext()+" interrogacion "); return new Symbol(Simbolos.interrogacion, yycolumn, yyline, yytext()); }
+">"         {return new Symbol(Simbolos.mayorq, yycolumn, yyline, yytext());}
 
 //-----> Palabras reservadas
 
