@@ -6,6 +6,7 @@
 package GUI;
 
 import Analizadores.*;
+import Estructuras.AFD;
 import Estructuras.Arbol;
 import Estructuras.Automata;
 import Estructuras.ExpresionRegular;
@@ -304,9 +305,10 @@ public class Interface extends javax.swing.JFrame {
 
                     expresion.arbol.GraficarSintactico("Grafico" + i);
                     
-                    Automata automata = new Automata(expresion.getArbol(),expresion.arbol.getTablaSiguientes());
-                    automata.generarTablaTransiciones();
-                    automata.generarTablaTransicionesDot("Transiciones" + i);
+                    AFD aFD = new AFD(expresion.getArbol(),expresion.arbol.getTablaSiguientes());
+                    aFD.generarTablaTransiciones();
+                    aFD.generarTablaTransicionesDot("Transiciones" + i);
+                    System.out.println(aFD.escribirDot("AFD" + i));
                     //this.imprimirEnConsola("Orden prefijo" + expresion.arbol.prefijo(expresion.arbol.raiz) + "\n");
                     //this.imprimirEnConsola("Orden postfijo" + expresion.arbol.postfijo(expresion.arbol.raiz) + "\n");
                     //this.imprimirEnConsola("Orden infijo" + expresion.arbol.infijo(expresion.arbol.raiz) + "\n");

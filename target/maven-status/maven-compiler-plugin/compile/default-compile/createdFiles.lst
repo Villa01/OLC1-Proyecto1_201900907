@@ -1,5 +1,6 @@
 GUI\Interface$3.class
 GUI\PanelImagen.class
+Estructuras\AFD.class
 Estructuras\Transicion.class
 Estructuras\Token.class
 GUI\Interface$4.class

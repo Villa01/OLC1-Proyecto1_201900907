@@ -21,6 +21,22 @@ import java.util.logging.Logger;
  * @author javil
  */
 public class Automata {
+
+    public ArrayList<Estado> getTablaTransiciones() {
+        return tablaTransiciones;
+    }
+
+    public void setTablaTransiciones(ArrayList<Estado> tablaTransiciones) {
+        this.tablaTransiciones = tablaTransiciones;
+    }
+
+    public String[] getLexemas() {
+        return lexemas;
+    }
+
+    public void setLexemas(String[] lexemas) {
+        this.lexemas = lexemas;
+    }
     
     private final ArbolSintactico arbolGenerador;
     private ArrayList<Estado> tablaTransiciones;
