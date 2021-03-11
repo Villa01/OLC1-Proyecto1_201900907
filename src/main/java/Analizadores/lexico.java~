@@ -6,8 +6,8 @@
 
 //------> Paquetes,importaciones
 package Analizadores; // Paquete donde se encuentra el archivo lexico.jflex
-import Estructuras.error;
 import java_cup.runtime.*;
+import Estructuras.*;
 import GUI.Interface;
 
 /*----------------------------------------------------------
