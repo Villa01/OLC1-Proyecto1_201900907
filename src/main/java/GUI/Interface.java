@@ -11,11 +11,15 @@ import Estructuras.Arbol;
 import Estructuras.Automata;
 import Estructuras.ExpresionRegular;
 import Estructuras.Nodo;
+import Estructuras.error;
+import java.awt.Desktop;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -42,6 +46,7 @@ public class Interface extends javax.swing.JFrame {
     private String rutaProyecto;
     private BufferedImage imagen;
     private ImageIcon imagenIcon;
+    public static ArrayList<error> listaErrores;
     public Interface() {
         rutaProyecto = System.getProperty("user.dir");      
         initComponents();
@@ -269,10 +274,7 @@ public class Interface extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        this.imprimirEnConsola("Generando Automatas");
         
         LinkedList<ExpresionRegular> expresiones = null;
        
@@ -318,7 +320,15 @@ public class Interface extends javax.swing.JFrame {
                 e.printStackTrace();
             }
         }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         
+        try {
+            this.generarReporteHTML();
+        } catch (IOException ex) {
+            Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
+        }
         actualizarArbolDeArchivos();
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -399,7 +409,53 @@ public class Interface extends javax.swing.JFrame {
     }
     
     
-    
+     public static void generarReporteHTML() throws IOException{
+        FileWriter fichero = null;
+                PrintWriter pw = null;
+                try {
+                    String path = "Reporteerrores.html";
+                    fichero = new FileWriter(path);
+                    pw = new PrintWriter(fichero);
+                    //comenzamos a escribir el html
+                    pw.println("<html>");
+                    pw.println("<head><title>REPORTE DE ERRORES</title></head>");
+                    pw.println("<body>");
+                    pw.println("<div align=\"center\">");
+                    pw.println("<h1>Reporte de Errores</h1>");
+                    pw.println("<br></br>");
+                    pw.println("<table border=1>");
+                    pw.println("<tr>");
+                    pw.println("<td>ERROR</td>");
+                    pw.println("<td>DESCRIPCION</td>");
+                    pw.println("<td>FILA</td>");
+                    pw.println("<td>COLUMNA</td>");
+                    pw.println("</tr>");
+                    for(int i=0;i<listaErrores.size();i++){
+                        error error = (error)listaErrores.get(i);
+                        pw.println("<tr>");
+                        pw.println("<td>"+error.getTipo()+"</td>");
+                        pw.println("<td>"+error.getDescripcion()+"</td>");
+                        pw.println("<td>"+error.getFila()+"</td>");
+                        pw.println("<td>"+error.getColumna()+"</td>");
+                        pw.println("</tr>");
+                    }
+                    pw.println("</table>");
+                    pw.println("</div");
+                    pw.println("</body>");
+                    pw.println("</html>");
+                    Desktop.getDesktop().open(new File(path));
+                } catch (Exception e) {
+                }finally{
+                    if(null!=fichero){
+                            fichero.close();
+                    }
+                }
+                try {
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

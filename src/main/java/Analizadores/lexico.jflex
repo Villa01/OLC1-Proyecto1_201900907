@@ -5,6 +5,8 @@
 //------> Paquetes,importaciones
 package Analizadores; // Paquete donde se encuentra el archivo lexico.jflex
 import java_cup.runtime.*;
+import Estructuras.*;
+import GUI.Interface;
 
 /*----------------------------------------------------------
   ------------ Opciones y Declaraciones ---------
@@ -87,4 +89,6 @@ comentarioMultilinea = <![^"!>"]*!>
 [ \t\r\n\f\s]             {/* Espacios en blanco, se ignoran */}
 
 //------> Errores Lexicos
-.           {  }
+.           { System.out.println("Error Lexico"+yytext()+" Linea "+yyline+" Columna "+yycolumn); 
+                            error nuevo = new error("Error Sintactico (Recuperado)", yytext(), yyline, yycolumn);
+                            Interface.listaErrores.add(nuevo); }

@@ -7,6 +7,8 @@
 //------> Paquetes,importaciones
 package Analizadores; // Paquete donde se encuentra el archivo lexico.jflex
 import java_cup.runtime.*;
+import Estructuras.*;
+import GUI.Interface;
 
 /*----------------------------------------------------------
   ------------ Opciones y Declaraciones ---------
@@ -69,11 +71,11 @@ public class lexico implements java_cup.runtime.Scanner {
     "\1\0\1\1\1\2\1\3\2\4\1\5\1\4\1\6"+
     "\1\7\3\4\1\10\1\11\1\12\1\13\1\14\1\15"+
     "\1\16\1\17\1\20\1\21\1\22\1\3\1\23\1\0"+
-    "\1\24\1\0\1\25\1\26\1\1\1\0\1\1\1\23"+
-    "\1\1\1\23\1\27";
+    "\1\24\1\0\1\25\1\26\1\27\1\0\1\27\1\23"+
+    "\2\27\1\23\1\30";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[38];
+    int [] result = new int[39];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -102,10 +104,10 @@ public class lexico implements java_cup.runtime.Scanner {
     "\0\40\0\40\0\240\0\300\0\340\0\40\0\40\0\40"+
     "\0\40\0\40\0\40\0\40\0\40\0\40\0\40\0\40"+
     "\0\u0100\0\100\0\140\0\40\0\200\0\40\0\40\0\u0120"+
-    "\0\340\0\u0140\0\u0160\0\u0180\0\u01a0\0\100";
+    "\0\340\0\u0140\0\u0160\0\40\0\u0180\0\u01a0\0\100";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[38];
+    int [] result = new int[39];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -136,10 +138,10 @@ public class lexico implements java_cup.runtime.Scanner {
     "\34\33\7\0\1\35\1\36\5\0\2\35\23\0\1\37"+
     "\7\0\2\37\40\0\1\40\22\0\10\41\1\42\10\41"+
     "\1\42\16\41\1\0\2\32\6\0\1\32\2\0\1\32"+
-    "\20\0\1\32\1\43\1\32\16\40\1\2\1\44\20\40"+
-    "\40\42\1\0\2\32\6\0\1\32\2\0\1\45\20\0"+
-    "\3\32\16\0\1\2\22\0\2\32\6\0\1\32\2\0"+
-    "\1\32\20\0\2\32\1\46";
+    "\20\0\1\32\1\43\1\32\16\40\1\44\1\45\20\40"+
+    "\40\42\1\0\2\32\6\0\1\32\2\0\1\46\20\0"+
+    "\3\32\16\0\1\44\22\0\2\32\6\0\1\32\2\0"+
+    "\1\32\20\0\2\32\1\47";
 
   private static int [] zzUnpackTrans() {
     int [] result = new int[448];
@@ -181,10 +183,11 @@ public class lexico implements java_cup.runtime.Scanner {
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
     "\1\0\2\11\2\1\2\11\1\1\2\11\3\1\13\11"+
-    "\2\1\1\0\1\11\1\0\2\11\1\1\1\0\5\1";
+    "\2\1\1\0\1\11\1\0\2\11\1\1\1\0\2\1"+
+    "\1\11\3\1";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[38];
+    int [] result = new int[39];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
@@ -631,97 +634,103 @@ public class lexico implements java_cup.runtime.Scanner {
       else {
         switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
           case 1: 
-            { 
+            { System.out.println("Error Lexico"+yytext()+" Linea "+yyline+" Columna "+yycolumn); 
+                            error nuevo = new error("Error Sintactico (Recuperado)", yytext(), yyline, yycolumn);
+                            Interface.listaErrores.add(nuevo);
             }
-          case 24: break;
+          case 25: break;
           case 2: 
             { return new Symbol(Simbolos.digito, yycolumn, yyline, yytext());
             }
-          case 25: break;
+          case 26: break;
           case 3: 
             { return new Symbol(Simbolos.letra, yycolumn, yyline, yytext());
             }
-          case 26: break;
+          case 27: break;
           case 4: 
             { return new Symbol(Simbolos.ascii, yycolumn, yyline, yytext());
             }
-          case 27: break;
+          case 28: break;
           case 5: 
             { return new Symbol(Simbolos.llavc, yycolumn, yyline, yytext());
             }
-          case 28: break;
+          case 29: break;
           case 6: 
             { /* Espacios en blanco, se ignoran */
             }
-          case 29: break;
+          case 30: break;
           case 7: 
             { return new Symbol(Simbolos.mayorq, yycolumn, yyline, yytext());
             }
-          case 30: break;
+          case 31: break;
           case 8: 
             { return new Symbol(Simbolos.porc, yycolumn, yyline, yytext());
             }
-          case 31: break;
+          case 32: break;
           case 9: 
             { return new Symbol(Simbolos.ptycoma, yycolumn, yyline, yytext());
             }
-          case 32: break;
+          case 33: break;
           case 10: 
             { return new Symbol(Simbolos.dospuntos, yycolumn, yyline, yytext());
             }
-          case 33: break;
+          case 34: break;
           case 11: 
             { return new Symbol(Simbolos.coma, yycolumn, yyline, yytext());
             }
-          case 34: break;
+          case 35: break;
           case 12: 
             { return new Symbol(Simbolos.conc, yycolumn, yyline, yytext());
             }
-          case 35: break;
+          case 36: break;
           case 13: 
             { return new Symbol(Simbolos.or, yycolumn, yyline, yytext());
             }
-          case 36: break;
+          case 37: break;
           case 14: 
             { return new Symbol(Simbolos.kleen, yycolumn, yyline, yytext());
             }
-          case 37: break;
+          case 38: break;
           case 15: 
             { return new Symbol(Simbolos.mas, yycolumn, yyline, yytext());
             }
-          case 38: break;
+          case 39: break;
           case 16: 
             { return new Symbol(Simbolos.llava, yycolumn, yyline, yytext());
             }
-          case 39: break;
+          case 40: break;
           case 17: 
             { return new Symbol(Simbolos.guion, yycolumn, yyline, yytext());
             }
-          case 40: break;
+          case 41: break;
           case 18: 
             { return new Symbol(Simbolos.interrogacion, yycolumn, yyline, yytext());
             }
-          case 41: break;
+          case 42: break;
           case 19: 
             { return new Symbol(Simbolos.id, yycolumn, yyline, yytext());
             }
-          case 42: break;
+          case 43: break;
           case 20: 
             { return new Symbol(Simbolos.cadena, yycolumn, yyline, yytext());
             }
-          case 43: break;
+          case 44: break;
           case 21: 
             { return new Symbol(Simbolos.flecha, yycolumn, yyline, yytext());
             }
-          case 44: break;
+          case 45: break;
           case 22: 
             { return new Symbol(Simbolos.escapado, yycolumn, yyline, yytext());
             }
-          case 45: break;
+          case 46: break;
           case 23: 
+            { 
+            }
+          case 47: break;
+          case 24: 
             { System.out.println("Reconocio Inicio de conjuntos " + yytext()); return new Symbol(Simbolos.conj, yycolumn, yyline, yytext());
             }
-          case 46: break;
+          case 48: break;
           default:
             zzScanError(ZZ_NO_MATCH);
         }

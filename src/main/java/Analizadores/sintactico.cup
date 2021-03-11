@@ -4,6 +4,7 @@ package Analizadores;
 import java_cup.runtime.Symbol;
 import java.util.LinkedList;
 import Estructuras.*;
+import GUI.Interface;
 //------> Codigo para el parser,variables, metodos
 parser code
 {:
@@ -18,14 +19,14 @@ parser code
     public void syntax_error(Symbol s)
     {
         System.err.println("Error en la Linea " + (s.right+1) +" Columna "+(s.left+1)+ ". Identificador "+s.value + " no reconocido. Se ha recuperado del error." );
-        //error nuevo = new error("Error Sintactico (Recuperado)", s.value.toString(), s.right+1, s.left+1);
-        //Ventana.listaErrores.add(nuevo);
+        error nuevo = new error("Error Sintactico (Recuperado)", s.value.toString(), s.right+1, s.left+1);
+        Interface.listaErrores.add(nuevo);
     }
     public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception
     {
         System.err.println("Error en la Linea " + (s.right+1)+ " Columna "+(s.left+1)+". Identificador " +s.value + " no reconocido.");
-        //error nuevo = new error("Error Sintactico", s.value.toString(), s.right+1, s.left+1);
-        //Ventana.listaErrores.add(nuevo);
+        error nuevo = new error("Error Sintactico", s.value.toString(), s.right+1, s.left+1);
+        Interface.listaErrores.add(nuevo);
     }
 :}
 
@@ -106,7 +107,7 @@ SIMBCONJ ::= letra:a                                  {:   :}
     | ascii:a                                         {:   :}
     | cadena:a                                        {:   :}
     | escapado:a                                      {:   :}
-
+    | error
 ;
 
 VALID ::= id dospuntos cadena ptycoma VALID | id dospuntos cadena ptycoma
