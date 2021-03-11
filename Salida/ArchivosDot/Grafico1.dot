@@ -1,47 +1,25 @@
 digraph Arbol_Sintactico{
 
  node[style=rounded shape=record]
-node0[label = "{false|{[8]|.|[18]}|0}"];
+node0[label = "{false|{[1]|.|[5]}|0}"];
 node0 -> node00
-node00[label = "{false|{[8]|.|[17]}|0}"];
+node00[label = "{false|{[1]|.|[1, 2, 3, 4]}|0}"];
 node00 -> node000
-node000[label = "{false|{[8]|num|[8]}|8}"];
+node000[label = "{false|{[1]|letra|[1]}|1}"];
 node00 -> node001
-node001[label = "{false|{[9]|.|[17]}|0}"];
+node001[label = "{true|{[2, 3, 4]|*|[2, 3, 4]}|0}"];
 node001 -> node0010
-node0010[label = "{false|{[9]|num|[9]}|9}"];
-node001 -> node0011
-node0011[label = "{false|{[10]|.|[17]}|0}"];
-node0011 -> node00110
-node00110[label = "{false|{[10]|/|[10]}|10}"];
-node0011 -> node00111
-node00111[label = "{false|{[11]|.|[17]}|0}"];
-node00111 -> node001110
-node001110[label = "{false|{[11]|num|[11]}|11}"];
-node00111 -> node001111
-node001111[label = "{false|{[12]|.|[17]}|0}"];
-node001111 -> node0011110
-node0011110[label = "{false|{[12]|num|[12]}|12}"];
-node001111 -> node0011111
-node0011111[label = "{false|{[13]|.|[17]}|0}"];
-node0011111 -> node00111110
-node00111110[label = "{false|{[13]|/|[13]}|13}"];
-node0011111 -> node00111111
-node00111111[label = "{false|{[14]|.|[17]}|0}"];
-node00111111 -> node001111110
-node001111110[label = "{false|{[14]|num|[14]}|14}"];
-node00111111 -> node001111111
-node001111111[label = "{false|{[15]|.|[17]}|0}"];
-node001111111 -> node0011111110
-node0011111110[label = "{false|{[15]|num|[15]}|15}"];
-node001111111 -> node0011111111
-node0011111111[label = "{false|{[16]|.|[17]}|0}"];
-node0011111111 -> node00111111110
-node00111111110[label = "{false|{[16]|num|[16]}|16}"];
-node0011111111 -> node00111111111
-node00111111111[label = "{false|{[17]|num|[17]}|17}"];
+node0010[label = "{false|{[2, 3, 4]|||[2, 3, 4]}|0}"];
+node0010 -> node00100
+node00100[label = "{false|{[2]|_|[2]}|2}"];
+node0010 -> node00101
+node00101[label = "{false|{[3, 4]|||[3, 4]}|0}"];
+node00101 -> node001010
+node001010[label = "{false|{[3]|letra|[3]}|3}"];
+node00101 -> node001011
+node001011[label = "{false|{[4]|digito|[4]}|4}"];
 node0 -> node01
-node01[label = "{false|{[18]|#|[18]}|18}"];
+node01[label = "{false|{[5]|#|[5]}|5}"];
 
 
 }

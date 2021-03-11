@@ -7,6 +7,7 @@ package GUI;
 
 import Analizadores.*;
 import Estructuras.Arbol;
+import Estructuras.Automata;
 import Estructuras.ExpresionRegular;
 import Estructuras.Nodo;
 import java.awt.Graphics;
@@ -302,14 +303,20 @@ public class Interface extends javax.swing.JFrame {
                     expresion.arbol.generarTablaSiguientes(expresion.id);
 
                     expresion.arbol.GraficarSintactico("Grafico" + i);
-                    this.imprimirEnConsola("Orden prefijo" + expresion.arbol.prefijo(expresion.arbol.raiz) + "\n");
-                    this.imprimirEnConsola("Orden postfijo" + expresion.arbol.postfijo(expresion.arbol.raiz) + "\n");
-                    this.imprimirEnConsola("Orden infijo" + expresion.arbol.infijo(expresion.arbol.raiz) + "\n");
+                    
+                    Automata automata = new Automata(expresion.getArbol(),expresion.arbol.getTablaSiguientes());
+                    automata.generarTablaTransiciones();
+                    automata.generarTablaTransicionesDot("Transiciones" + i);
+                    //this.imprimirEnConsola("Orden prefijo" + expresion.arbol.prefijo(expresion.arbol.raiz) + "\n");
+                    //this.imprimirEnConsola("Orden postfijo" + expresion.arbol.postfijo(expresion.arbol.raiz) + "\n");
+                    //this.imprimirEnConsola("Orden infijo" + expresion.arbol.infijo(expresion.arbol.raiz) + "\n");
                 }
             } catch (java.lang.NullPointerException e){
                  imprimirEnConsola("No se pudieron generar las expresiones");   
+                e.printStackTrace();
             }
         }
+        
         actualizarArbolDeArchivos();
     }//GEN-LAST:event_jButton2ActionPerformed
 

@@ -21,11 +21,22 @@ public class Estado {
 
     public Estado(int nombre) {
         this.nombre = nombre;
-        this.lexemas = lexemas;
+        this.lexemas = new ArrayList<String>();
+        this.transiciones = new ArrayList<Transicion>();
+        this.siguientes = new ArrayList<Integer>();
     }
     
-    public void agregarTransicion(Transicion tran){
-        this.transiciones.add(tran);
+    public void agregarTransicion(Transicion tran, int posicion){
+        if ( posicion > this.transiciones.size()){
+            for (int i = 0; i < posicion; i++) {
+                try{
+                    Transicion prueba = this.transiciones.get(i);
+                } catch( Exception e){
+                    this.transiciones.add(null);
+                }
+            }
+        }
+        this.transiciones.add(posicion, tran);
     }
     
     public void agregarLexema(String lexema){
@@ -54,6 +65,14 @@ public class Estado {
 
     public void setSiguientes(ArrayList<Integer> siguientes) {
         this.siguientes = siguientes;
+    }
+
+    public ArrayList<Transicion> getTransiciones() {
+        return transiciones;
+    }
+
+    public void setTransiciones(ArrayList<Transicion> transiciones) {
+        this.transiciones = transiciones;
     }
     
     

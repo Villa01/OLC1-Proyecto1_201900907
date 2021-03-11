@@ -17,6 +17,16 @@ import java.util.logging.Logger;
 
 
 public class ArbolSintactico extends Arbol {
+
+    private HashMap tablaSiguientes;
+
+    public HashMap getTablaSiguientes() {
+        return tablaSiguientes;
+    }
+
+    public void setTablaSiguientes(HashMap tablaSiguientes) {
+        this.tablaSiguientes = tablaSiguientes;
+    }
     
     public ArbolSintactico(Nodo raiz) {
         super(raiz);
@@ -65,7 +75,6 @@ public class ArbolSintactico extends Arbol {
         nodoTerm = nodoTerm.replace("\n", "\\ n");
         r= "node" + i + "[label = \"{"+nodo.isAnulable()+"|{"+nodo.getPrimeros()+"|"+nodoTerm+"|"+nodo.getUltimos()+"}|"+id+"}\"];\n";
         
-        System.out.println("El texto dentro de graphviz es " + r);
         for(int j =0 ; j<=nodo.getHijos().size()-1; j++){
             r += "node" + i + " -> node" + i + k + "\n";
             r += GraficaNodos(nodo.getHijos().get(j), ""+i+k);
@@ -235,6 +244,7 @@ public class ArbolSintactico extends Arbol {
 "                <TD>Siguientes</TD>\n      "+
 "            </TR>";
         HashMap siguientes = generarSiguientesEnTabla(this.raiz);
+        this.setTablaSiguientes(siguientes);
         Set<Integer> llaves = siguientes.keySet();
         for (Integer llave : llaves ){
             texto+= "<TR>\n" +
@@ -281,7 +291,6 @@ public class ArbolSintactico extends Arbol {
             llaves.addAll(llavesDer);
             llaves.addAll(llavesSig);
             
-            System.out.println("Las llaves son " + llaves + " en el nodo con lexema " + nodo.getToken());
             for (Integer llave : llaves ){
                 if (siguientes.get(llave)!= null){
                     ArrayList datosSigIz = (ArrayList)sigIz.get(llave);
@@ -355,7 +364,6 @@ public class ArbolSintactico extends Arbol {
                 
              }
         }
-        System.out.println("Los siguientes son "+siguientes);
         return siguientes;
     }
     

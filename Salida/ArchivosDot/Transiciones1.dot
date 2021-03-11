@@ -1,0 +1,23 @@
+digraph Transiciones{arset [style="dotted" label=<
+<TABLE ALIGN="LEFT">
+	<TR>
+		<TD> Estado</TD>
+ 		<TD>letra</TD>
+		<TD>"_"</TD>
+		<TD>letra</TD>
+		<TD>digito</TD>
+	</TR>
+	<TR>
+		<TD>S0[1]</TD>
+		<TD> - </TD>
+		<TD> - </TD>
+		<TD> - </TD>
+	</TR>
+	<TR>
+		<TD>S1[2, 3, 4, 5]</TD>
+		<TD>1</TD>
+		<TD> - </TD>
+		<TD>1</TD>
+	</TR>
+</TABLE>
+    >, ];}
